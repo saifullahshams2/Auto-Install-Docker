@@ -12,4 +12,4 @@ This repository contains a **one-line installation script** for Ubuntu 22.04 and
 ## 📥 Quick Install (One Line)
 
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/saifullahshams2/install_docker_portainer_caddy/main/install.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/saifullahshams2/Auto-Install-Docker/main/install.sh)
