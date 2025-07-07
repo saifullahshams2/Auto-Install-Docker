@@ -57,11 +57,7 @@ sudo docker network connect caddynet portainer
 echo "📁 Creating Caddy folder and default Caddyfile..."
 sudo mkdir -p /etc/caddy
 
-sudo tee /etc/caddy/Caddyfile > /dev/null <<EOL
-:80 {
-    respond "Caddy is working!"
-}
-EOL
+sudo touch /etc/caddy/Caddyfile
 
 echo "🌍 Running Caddy container on 'caddynet'..."
 sudo docker run -d --name caddy \
