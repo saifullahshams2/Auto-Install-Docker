@@ -14,4 +14,6 @@ This repository contains a **one-line installation script** for Ubuntu 22.04 and
 ```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/saifullahshams2/Auto-Install-Docker/main/install.sh)
 ```
-This project provides a one-command setup script for Ubuntu servers that installs Docker, runs Portainer for container management, and deploys Caddy web server—all inside Docker. Ideal for setting up a lightweight, web-ready container management environment in minutes.
+
+This project offers a streamlined setup script for Ubuntu servers, enabling quick installation of Docker, deployment of Portainer for container management, and setup of Caddy web server—all within Docker containers. Perfect for creating a lightweight, web-ready environment in just minutes.
+```
