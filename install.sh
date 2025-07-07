@@ -59,12 +59,23 @@ sudo mkdir -p /etc/caddy
 
 sudo touch /etc/caddy/Caddyfile
 
+# Check if the file is empty before writing to it
+if [ ! -s /etc/caddy/Caddyfile ]; then
+  sudo tee /etc/caddy/Caddyfile > /dev/null <<EOF
+:80 {
+  root * /usr/share/caddy
+  file_server
+}
+EOF
+fi
+
 echo "🌍 Running Caddy container on 'caddynet'..."
 sudo docker run -d --name caddy \
     --network caddynet \
     -p 80:80 -p 443:443 \
     -v caddy_data:/data \
     -v caddy_config:/config \
+    -v /etc/caddy/default:/usr/share/caddy \
     -v /etc/caddy/Caddyfile:/etc/caddy/Caddyfile \
     --restart=always \
     caddy:latest
