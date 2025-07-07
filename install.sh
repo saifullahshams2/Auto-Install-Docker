@@ -81,7 +81,7 @@ sudo docker run -d --name caddy \
     caddy:latest
 
 echo "✅ DONE!"
-echo "🔗 Portainer: http://localhost:9000"
-echo "🌍 Caddy: http://localhost"
+echo "🔗 Portainer: http://localhost:9000 or https://your-ip-address:9000"
+echo "🌍 Caddy: http://localhost or http://your-ip-address"
 echo "📂 Edit Caddyfile at /etc/caddy/Caddyfile"
 echo "⚠️ You may need to logout and login again for Docker group changes to apply."
