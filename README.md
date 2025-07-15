@@ -16,4 +16,4 @@ bash <(curl -fsSL https://raw.githubusercontent.com/saifullahshams2/Auto-Install
 ```
 
 This project offers a streamlined setup script for Ubuntu servers, enabling quick installation of Docker, deployment of Portainer for container management, and setup of Caddy web server—all within Docker containers. Perfect for creating a lightweight, web-ready environment in just minutes.
-```
+
