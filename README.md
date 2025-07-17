@@ -24,8 +24,9 @@ bash <(curl -fsSL https://raw.githubusercontent.com/saifullahshams2/Auto-Install
 
 During the installation, the following information will be requested from the user:
 
-1. **Domain**: The domain to be used with N8N and URL for the N8N webhook.
-2. **Email for TLS Certificate**: The email address to be used for obtaining a TLS certificate.
+1. **Username** and **Password** for n8n.
+2. **Domain**: The domain to be used with N8N and URL for the N8N webhook.
+3. **Email for TLS Certificate**: The email address to be used for obtaining a TLS certificate.
 
 ## Important Note
 
