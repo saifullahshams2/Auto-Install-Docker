@@ -5,7 +5,7 @@ This repository contains a **one-line installation script** for Ubuntu 22.04 and
 - 🐳 Installs **Docker**
 - 📊 Deploys **Portainer** (via Docker)
 - 🌍 Deploys **Caddy Web Server** (via Docker)
-- 🗂️ Creates a default `Caddyfile` at `/etc/caddy/Caddyfile`
+- 🗂️ Creates a default `Caddyfile` at `/etc/caddy/Caddyfile` if Caddyfile is empty.
 - 🛠️ Includes an optional **n8n** installer that prompts the user for installation during the setup process.
 
 ---
