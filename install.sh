@@ -123,11 +123,14 @@ if [[ "$answern8n" == "yes" || "$answern8n" == "y" ]]; then
     --name n8n \
     --restart always \
     --network caddynet \
+    --network n8n \
+    -p 5678:5678 \
     -v n8n_data:/home/node/.n8n \
     -e N8N_BASIC_AUTH_ACTIVE=true \
     -e N8N_BASIC_AUTH_USER="$N8N_USER" \
     -e N8N_BASIC_AUTH_PASSWORD="$N8N_PASSWORD" \
     -e WEBHOOK_URL="https://$DOMAIN_N8N" \
+    -e N8N_HOST="$DOMAIN_N8N" \
     n8nio/n8n
     
 elif [[ "$answern8n" == "no" || "$answern8n" == "n" ]]; then
