@@ -15,24 +15,19 @@ This repository contains a **one-line installation script** for Ubuntu 22.04 and
 bash <(curl -fsSL https://raw.githubusercontent.com/saifullahshams2/Auto-Install-Docker/main/install.sh)
 ```
 
-# Documentation for N8N Installation Process
+## Documentation for N8N Installation Process
 
-## Overview
-This section outlines the installation process for N8N, a workflow automation tool.
-
-## Installation Prompt
 - The installation process will prompt the user to confirm whether they want to install N8N.
 
 ## User Inputs
 During the installation, the following information will be requested from the user:
-1. **Domain**: The domain to be used with N8N.
-2. **Webhook URL**: The URL for the N8N webhook.
-3. **Email for TLS Certificate**: The email address to be used for obtaining a TLS certificate.
+1. **Domain**: The domain to be used with N8N, The URL for the N8N webhook.
+2. **Email for TLS Certificate**: The email address to be used for obtaining a TLS certificate.
 
 ## Important Note
-Ensure that your IP address is correctly pointed to the desired domain to prevent any disruptions in service.
-For N8N, it will first ask whether to install it or not. It will also prompt for the domain to use with n8n and the n8n webhook URL and Email for tls Certificate.
+
 Please ensure your IP address points to the desired domain to avoid any disruptions.
 
+## Description
 This project offers a streamlined setup script for Ubuntu servers, enabling quick installation of Docker, deployment of Portainer for container management, and setup of Caddy web server—all within Docker containers. Perfect for creating a lightweight, web-ready environment in just minutes.
 
