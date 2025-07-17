@@ -2,6 +2,27 @@
 
 set -e
 
+echo "Welcome to the Docker, Portainer, Caddy and n8n Installer!"
+echo "This script will install Docker, Portainer, Caddy, and optionally n8n in Docker. It will also set up a Caddy reverse proxy for n8n with HTTPS support."
+echo "Please ensure you have sudo privileges to run this script."
+
+read -p "Do you want to install n8n in Docker? (yes/no): " answern8n
+answern8n=$(echo "$answern8n" | tr '[:upper:]' '[:lower:]')
+
+if [[ "$answern8n" == "yes" || "$answern8n" == "y" ]]; then
+    
+    read -p "Enter your N8N basic auth username: " N8N_USER
+    read -p "Enter your N8N basic auth password: " N8N_PASSWORD
+    read -p "Enter your domain for n8N (e.g., n8n.example.com): " DOMAIN_N8N
+    read -p "Enter your email for SSL certificate registration: " EMAIL
+    echo "You have chosen to install n8n in Docker."
+
+elif [[ "$answern8n" == "no" || "$answern8n" == "n" ]]; then
+    echo "You have chosen not to install n8n in Docker."
+else
+    echo "Invalid answer. Please enter yes or no."
+fi
+
 echo "🛠️ Updating package list..."
 sudo apt update
 
@@ -59,16 +80,27 @@ sudo mkdir -p /etc/caddy
 
 sudo touch /etc/caddy/Caddyfile
 
-# Check if the file is empty before writing to it
-if [ ! -s /etc/caddy/Caddyfile ]; then
-  sudo tee /etc/caddy/Caddyfile > /dev/null <<EOF
+# Create a secure Caddyfile with HTTPS (Linux EOL)
+CADDYFILE_PATH="/etc/caddy/Caddyfile"
+
+if [ ! -s "$CADDYFILE_PATH" ]; then
+  sudo tee "$CADDYFILE_PATH" > /dev/null <<EOF
+$DOMAIN_N8N {
+    reverse_proxy n8n:5678
+    tls $EMAIL
+}
+
 :80 {
-  root * /usr/share/caddy
-  file_server
+    root * /usr/share/caddy
+    file_server
 }
 EOF
+else
+  echo "Caddyfile already exists. Skipping creation. Please edit it manually if needed."
 fi
 
+
+# Start Installing Caddy
 echo "🌍 Running Caddy container on 'caddynet'..."
 sudo docker run -d --name caddy \
     --network caddynet \
@@ -79,6 +111,31 @@ sudo docker run -d --name caddy \
     -v /etc/caddy/Caddyfile:/etc/caddy/Caddyfile \
     --restart=always \
     caddy:latest
+
+
+# Start Installing N8N from here
+if [[ "$answern8n" == "yes" || "$answern8n" == "y" ]]; then  
+    echo "Start installing n8n in Docker..."
+
+    sudo docker volume create n8n_data
+    
+    sudo docker run -d \
+    --name n8n \
+    --restart always \
+    --network caddynet \
+    -v n8n_data:/home/node/.n8n \
+    -e N8N_BASIC_AUTH_ACTIVE=true \
+    -e N8N_BASIC_AUTH_USER="$N8N_USER" \
+    -e N8N_BASIC_AUTH_PASSWORD="$N8N_PASSWORD" \
+    -e WEBHOOK_URL="https://$DOMAIN_N8N" \
+    n8nio/n8n
+    
+elif [[ "$answern8n" == "no" || "$answern8n" == "n" ]]; then
+    echo "Skipping n8n install."
+else
+    echo "Invalid answer. Please enter yes or no."
+fi
+
 
 echo "✅ DONE!"
 echo "🔗 Portainer: http://localhost:9000 or https://your-ip-address:9000"
