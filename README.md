@@ -1,4 +1,4 @@
-# 🚀 Docker Setup Script: Portainer + Caddy (Ubuntu 22/24)
+# 🚀 Docker Setup Script: Portainer + Caddy + N8N (Ubuntu 22/24)
 
 This repository contains a **one-line installation script** for Ubuntu 22.04 and 24.04 that:
 
