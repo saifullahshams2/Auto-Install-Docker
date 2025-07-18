@@ -74,7 +74,7 @@ fi
 echo "📦 Creating volume for Portainer..."
 sudo docker volume create portainer_data &> /dev/null;
 
-echo "🚀 Running Portainer (default bridge network)..."
+echo "🚀 Running Portainer"
 {
 sudo docker run -d --name portainer \
     -p 9000:9000 \
