@@ -24,7 +24,7 @@ else
 fi
 
 echo "🛠️ Updating package list..."
-sudo apt update
+sudo apt update &> /dev/null;
 
 echo "🐳 Checking if Docker is installed..."
 {
@@ -89,7 +89,6 @@ sudo touch /etc/caddy/Caddyfile &> /dev/null;
 
 # Create a secure Caddyfile with HTTPS (Linux EOL)
 CADDYFILE_PATH="/etc/caddy/Caddyfile"
-{
 if [ ! -s "$CADDYFILE_PATH" ]; then
   sudo tee "$CADDYFILE_PATH" > /dev/null <<EOF
 $DOMAIN_N8N {
@@ -105,7 +104,6 @@ EOF
 else
   echo "Caddyfile already exists. Skipping creation. Please edit it manually if needed."
 fi
-} &> /dev/null;
 
 # Start Installing Caddy
 echo "🌍 Running Caddy container on 'caddynet'..."
@@ -121,10 +119,12 @@ sudo docker run -d --name caddy \
     caddy:latest
 
 } &> /dev/null;
+
+
+
 # Start Installing N8N from here
 if [[ "$answern8n" == "yes" || "$answern8n" == "y" ]]; then  
     echo "Start installing n8n in Docker..."
-{
     sudo docker volume create n8n_data
     
     sudo docker run -d \
@@ -142,7 +142,6 @@ if [[ "$answern8n" == "yes" || "$answern8n" == "y" ]]; then
     n8nio/n8n
     
 elif [[ "$answern8n" == "no" || "$answern8n" == "n" ]]; then
-} &> /dev/null;
     echo "Skipping n8n install."
 else
     echo "Invalid answer. Please enter yes or no."
