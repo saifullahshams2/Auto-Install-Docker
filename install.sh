@@ -125,8 +125,17 @@ sudo docker run -d --name caddy \
 # Start Installing N8N from here
 if [[ "$answern8n" == "yes" || "$answern8n" == "y" ]]; then  
     echo "Start installing n8n in Docker..."
-    sudo docker volume create n8n_data
-    
+    echo "Creating Docker network for n8n..."
+{    
+    # Create Docker network for n8n
+    if ! sudo docker network ls | grep -q n8n; then
+        sudo docker network create n8n
+    else
+        echo "✅ Docker network 'n8n' already exists."
+    fi
+} &> /dev/null;
+    sudo docker volume create n8n_data &> /dev/null;
+{   
     sudo docker run -d \
     --name n8n \
     --restart always \
@@ -146,7 +155,7 @@ elif [[ "$answern8n" == "no" || "$answern8n" == "n" ]]; then
 else
     echo "Invalid answer. Please enter yes or no."
 fi
-
+} &> /dev/null;
 
 echo "✅ DONE!"
 echo "🔗 Portainer: http://localhost:9000 or https://your-ip-address:9000"
