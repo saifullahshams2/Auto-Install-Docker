@@ -11,8 +11,8 @@ answern8n=$(echo "$answern8n" | tr '[:upper:]' '[:lower:]')
 
 if [[ "$answern8n" == "yes" || "$answern8n" == "y" ]]; then
     
-    read -p "Enter your N8N basic auth username: " N8N_USER
-    read -p "Enter your N8N basic auth password: " N8N_PASSWORD
+    read -p "Enter your N8N Username: " N8N_USER
+    read -sp "Enter your N8N Password: " N8N_PASSWORD
     read -p "Enter your domain for n8N (e.g., n8n.example.com): " DOMAIN_N8N
     read -p "Enter your email for SSL certificate registration: " EMAIL
     echo "You have chosen to install n8n in Docker."
