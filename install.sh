@@ -48,7 +48,7 @@ if ! command -v docker &> /dev/null; then
 
     sudo apt update &> /dev/null;
     sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin &> /dev/null;
-else
+else 
     echo "✅ Docker is already installed."
 fi
 
