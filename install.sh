@@ -13,6 +13,7 @@ if [[ "$answern8n" == "yes" || "$answern8n" == "y" ]]; then
     
     read -p "Enter your N8N Username: " N8N_USER
     read -sp "Enter your N8N Password: " N8N_PASSWORD
+    echo
     read -p "Enter your domain for n8N (e.g., n8n.example.com): " DOMAIN_N8N
     read -p "Enter your email for SSL certificate registration: " EMAIL
     echo "You have chosen to install n8n in Docker."
@@ -24,13 +25,16 @@ else
 fi
 
 echo "🛠️ Updating package list..."
+
 sudo apt update &> /dev/null;
 
 echo "🐳 Checking if Docker is installed..."
-{
+
+
 if ! command -v docker &> /dev/null; then
     echo "📦 Installing Docker..."
-    sudo apt install -y ca-certificates curl gnupg lsb-release
+{
+    sudo apt install -y ca-certificates curl gnupg lsb-release &> /dev/null;
 
     sudo mkdir -p /etc/apt/keyrings
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | \
@@ -45,9 +49,10 @@ if ! command -v docker &> /dev/null; then
     sudo apt update
     sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 else
+} &> /dev/null;
     echo "✅ Docker is already installed."
 fi
-} &> /dev/null;
+
 
 echo "🔐 Adding current user to docker group..."
 sudo usermod -aG docker $USER &> /dev/null;
@@ -59,13 +64,13 @@ sudo systemctl start docker
 } &> /dev/null;
 
 echo "🌐 Creating Docker network: caddynet..."
-{
+
 if ! sudo docker network ls | grep -q caddynet; then
-    sudo docker network create caddynet
+    sudo docker network create caddynet &> /dev/null;
 else
     echo "✅ Docker network 'caddynet' already exists."
 fi
-} &> /dev/null;
+
 
 echo "📦 Creating volume for Portainer..."
 sudo docker volume create portainer_data &> /dev/null;
@@ -79,13 +84,17 @@ sudo docker run -d --name portainer \
     -v portainer_data:/data \
     portainer/portainer-ce:latest
 } &> /dev/null;
+
 echo "🔗 Connecting Portainer to 'caddynet'..."
+
 sudo docker network connect caddynet portainer &> /dev/null;
 
 echo "📁 Creating Caddy folder and default Caddyfile..."
+
 sudo mkdir -p /etc/caddy &> /dev/null;
 
 sudo touch /etc/caddy/Caddyfile &> /dev/null;
+
 
 # Create a secure Caddyfile with HTTPS (Linux EOL)
 CADDYFILE_PATH="/etc/caddy/Caddyfile"
@@ -104,6 +113,7 @@ EOF
 else
   echo "Caddyfile already exists. Skipping creation. Please edit it manually if needed."
 fi
+
 
 # Start Installing Caddy
 echo "🌍 Running Caddy container on 'caddynet'..."
@@ -126,14 +136,15 @@ sudo docker run -d --name caddy \
 if [[ "$answern8n" == "yes" || "$answern8n" == "y" ]]; then  
     echo "Start installing n8n in Docker..."
     echo "Creating Docker network for n8n..."
-{    
+   
     # Create Docker network for n8n
     if ! sudo docker network ls | grep -q n8n; then
-        sudo docker network create n8n
+        sudo docker network create n8n &> /dev/null;
     else
         echo "✅ Docker network 'n8n' already exists."
     fi
-} &> /dev/null;
+
+    echo "📦 Creating volume for n8n data..."
     sudo docker volume create n8n_data &> /dev/null;
 {   
     sudo docker run -d \
@@ -149,13 +160,15 @@ if [[ "$answern8n" == "yes" || "$answern8n" == "y" ]]; then
     -e WEBHOOK_URL="https://$DOMAIN_N8N" \
     -e N8N_HOST="$DOMAIN_N8N" \
     n8nio/n8n
-    
+
+} &> /dev/null;
+
 elif [[ "$answern8n" == "no" || "$answern8n" == "n" ]]; then
     echo "Skipping n8n install."
 else
     echo "Invalid answer. Please enter yes or no."
 fi
-} &> /dev/null;
+
 
 echo "✅ DONE!"
 echo "🔗 Portainer: http://localhost:9000 or https://your-ip-address:9000"
