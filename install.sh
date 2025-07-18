@@ -10,10 +10,8 @@ read -p "Do you want to install n8n in Docker? (yes/no): " answern8n
 answern8n=$(echo "$answern8n" | tr '[:upper:]' '[:lower:]')
 
 if [[ "$answern8n" == "yes" || "$answern8n" == "y" ]]; then
-    
-    read -p "Enter your N8N Username: " N8N_USER
-    read -sp "Enter your N8N Password: " N8N_PASSWORD
-    echo
+
+    echo "Please provide the following information for n8n installation:"
     read -p "Enter your domain for n8N (e.g., n8n.example.com): " DOMAIN_N8N
     read -p "Enter your email for SSL certificate registration: " EMAIL
     echo "You have chosen to install n8n in Docker."
@@ -133,8 +131,8 @@ sudo docker run -d --name caddy \
 
 # Start Installing N8N from here
 if [[ "$answern8n" == "yes" || "$answern8n" == "y" ]]; then  
-    echo "Start installing n8n in Docker..."
-    echo "Creating Docker network for n8n..."
+    echo "📦 Start installing n8n in Docker..."
+    echo "🌐 Creating Docker network for n8n..."
    
     # Create Docker network for n8n
     if ! sudo docker network ls | grep -q n8n; then
@@ -145,6 +143,8 @@ if [[ "$answern8n" == "yes" || "$answern8n" == "y" ]]; then
 
     echo "📦 Creating volume for n8n data..."
     sudo docker volume create n8n_data &> /dev/null;
+
+    echo "📁 installing n8n in Docker..."
 {   
     sudo docker run -d \
     --name n8n \
@@ -153,14 +153,12 @@ if [[ "$answern8n" == "yes" || "$answern8n" == "y" ]]; then
     --network n8n \
     -p 5678:5678 \
     -v n8n_data:/home/node/.n8n \
-    -e N8N_BASIC_AUTH_ACTIVE=true \
-    -e N8N_BASIC_AUTH_USER="$N8N_USER" \
-    -e N8N_BASIC_AUTH_PASSWORD="$N8N_PASSWORD" \
     -e WEBHOOK_URL="https://$DOMAIN_N8N" \
     -e N8N_HOST="$DOMAIN_N8N" \
     n8nio/n8n
 
 } &> /dev/null;
+    echo "✅ n8n is now running in Docker."
 
 elif [[ "$answern8n" == "no" || "$answern8n" == "n" ]]; then
     echo "Skipping n8n install."
@@ -173,5 +171,5 @@ echo "✅ DONE!"
 echo "🔗 Portainer: http://localhost:9000 or https://your-ip-address:9000"
 echo "🌍 Caddy: http://localhost or http://your-ip-address"
 echo "🌐 n8n: https://$DOMAIN_N8N (if installed)"
-echo "📂 Edit Caddyfile at /etc/caddy/Caddyfile"
+echo "📂 Edit Caddyfile at /etc/caddy/Caddyfile. (If Needed)"
 echo "⚠️ You may need to logout and login again for Docker group changes to apply."
