@@ -97,15 +97,18 @@ sudo touch /etc/caddy/Caddyfile &> /dev/null;
 CADDYFILE_PATH="/etc/caddy/Caddyfile"
 if [ ! -s "$CADDYFILE_PATH" ]; then
   sudo tee "$CADDYFILE_PATH" > /dev/null <<EOF
+# Defult Configuration for n8n with Caddy
 $DOMAIN_N8N {
     reverse_proxy n8n:5678
     tls $EMAIL
 }
 
+# Default Caddy configuration if no domain is provided
+# This will respond with a simple message if IP address is used
 :80 {
-    root * /usr/share/caddy
-    file_server
+    respond "Caddy is working!"
 }
+# From here you can add more configurations as needed
 EOF
 else
   echo "Caddyfile already exists. Skipping creation. Please edit it manually if needed."
@@ -120,7 +123,6 @@ sudo docker run -d --name caddy \
     -p 80:80 -p 443:443 \
     -v caddy_data:/data \
     -v caddy_config:/config \
-    -v /etc/caddy/default:/usr/share/caddy \
     -v /etc/caddy/Caddyfile:/etc/caddy/Caddyfile \
     --restart=always \
     caddy:latest
