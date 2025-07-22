@@ -157,6 +157,7 @@ if [[ "$answern8n" == "yes" || "$answern8n" == "y" ]]; then
     -v n8n_data:/home/node/.n8n \
     -e WEBHOOK_URL="https://$DOMAIN_N8N" \
     -e N8N_HOST="$DOMAIN_N8N" \
+    -e N8N_PROTOCOL=https
     n8nio/n8n
 
 } &> /dev/null;
