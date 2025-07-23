@@ -16,6 +16,12 @@ This repository contains a **one-line installation script** for Ubuntu 22.04 and
 bash <(curl -fsSL https://raw.githubusercontent.com/saifullahshams2/Auto-Install-Docker/main/install.sh)
 ```
 
+## 📥 Quick Update (One Line)
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/saifullahshams2/Auto-Install-Docker/main/update.sh)
+```
+
 ## Documentation for N8N Installation Process
 
 - The installation process will prompt the user to confirm whether they want to install N8N.
